@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import styles from './App.module.scss';
+
+import Main from 'routes/Main/Main';
+import Table from 'routes/Table/Table';
+
+class App extends Component {
+  checkAuthentication = () => {
+    return sessionStorage.getItem('authentication') === 'true';
+  }
+
+  render() {
+    return (
+      <div className={styles.app}>
+        <BrowserRouter>
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={(props) =>
+                !this.checkAuthentication() ? (
+                  <Main {...props}/>
+                ) : (
+                  <Redirect to={{pathname: "/table"}}/>
+                )}
+            />
+            <Route
+              exact
+              path="/table"
+              render={(props) =>
+                this.checkAuthentication() ? (
+                  <Table {...props}/>
+                ) : (
+                  <Redirect to={{pathname: "/"}}/>
+                )}
+              />
+            <Redirect to="/"/>
+          </Switch>
+        </BrowserRouter>
+      </div>
+    )
+  }
 }
 
 export default App;

@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 20rem;
+}
+
+.input {
+  margin-bottom: 1rem;
+}
+
+.submit {
+  margin-top: 1rem;
+}
+
+.error {
+  min-height: 1rem;
+  color: #ff0000;
+}
